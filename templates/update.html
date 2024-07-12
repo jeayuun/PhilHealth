@@ -75,47 +75,9 @@
         </table>
     </div>
     <div class="inputBox">
-        <input type="text" autocomplete="off" placeholder="Search Records.." id="userInput">
+        <input type="text" autocomplete="off" placeholder="Enter primary key.." id="userInput">
         <button type="submit" id="searchButton">Search</button>
     </div>
-</div>
-    <!-- <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    {% if records %}
-                        {% for key in records[0].keys() %}
-                            <th>{{ key }}</th>
-                        {% endfor %}
-                        <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for record in records %}
-                    <tr>
-                        {% for value in record.values() %}
-                            <td>{{ value }}</td>
-                        {% endfor %}
-                        <td class="actions">
-                            <form action="{{ url_for('edit_record') }}" method="get" style="display:inline;">
-                                <input type="hidden" name="id" value="{{ record.id }}">
-                                <input type="hidden" name="table" value="{{ table }}">
-                                <button type="submit">Edit</button>
-                            </form>
-                            <form action="{{ url_for('delete_record') }}" method="post" style="display:inline;">
-                                <input type="hidden" name="id" value="{{ record.id }}">
-                                <input type="hidden" name="table" value="{{ table }}">
-                                <button type="submit">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <h4 style="color: #999; font-size: 1.3rem; text-align: center;"> No records found. </h4>
-        {% endif %}
-    </div> -->
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -148,7 +110,6 @@
                     const tableHead = document.getElementById('table-head');
                     const tableBody = document.getElementById('table-body');
 
-                    // Clear existing table data
                     tableHead.innerHTML = '';
                     tableBody.innerHTML = '';
 
@@ -225,7 +186,7 @@
         }
 
         function editRecord(tableName, id) {
-            console.log(`Edit record with ID: ${id}`); 
+            console.log(`Edit record with ID: ${id}`);
             fetch(`/get_record/${tableName}/${encodeURIComponent(id)}`)
                 .then(response => response.json())
                 .then(data => {
@@ -299,13 +260,25 @@
             }
         }
 
-        // Fetch initial data for dependents table
         fetchTableData('dependents');
     });
 </script>
 
 
 <style>
+    .inputBox {
+        margin: 1px auto;
+        bottom: 25px;
+        left: 50%;
+        height: 40px;
+        border-radius: 30px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        margin-top: 0px;
+    }
+
     .table-container {
         height: 500px;
         overflow-y: auto;
@@ -363,6 +336,71 @@
         display: inline;
 
     }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        margin: 2% 0;
+    }
+
+    .input-container, .edit-input, .edit-label, .edit-btn-container {
+        display: flex;
+    }
+
+    #editForm {
+        border-radius: 30px;
+        background: white;
+    }
+
+    #editForm p {
+	    color: #55a654;
+        padding-top: 30px;
+        text-align: center;
+    }
+
+    .form-content {
+        margin-top: 30px;
+        width: 50%;
+        background: linear-gradient(#8cc650, #5FBF5E);
+        border-radius: 30px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, .1),
+            0 0 10px rgba(0, 0, 0, .2),
+            0 0 15px rgba(0, 0, 0, .2);
+    }
+
+    .edit-label {
+        font-size: 15px;
+        color: #2b6a2d;
+        margin: 0;
+        justify-content: flex-start;
+        width: 100%;
+        margin-left: 60px;
+    }
+
+    .input-container {
+        align-items: center;
+        margin: 15px;
+    }
+
+    .edit-input {
+        justify-content: flex-end;
+        width: 100%;
+        margin: 0;
+        margin-right: 60px;
+        border-radius: 30px;
+    }
+
+    .edit-btn-container {
+        gap: 50px;
+        margin: 0 10%;
+        padding-bottom: 5%;
+    }
+
+    .edit-btn-container button {
+        margin-top: 10px;
+        border-radius: 30px;
+    }
+
 </style>
 {% endblock %}
 
