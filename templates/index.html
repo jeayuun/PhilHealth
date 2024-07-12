@@ -19,41 +19,37 @@
 
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="fixed-bottom">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="margin-bottom: 0rem;">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="margin-top: 0rem;"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
     {% if session.get("user_id") %}
-    <div class="container">
-        <div class="left">
-            <header>
-                {% block content %}{% endblock %}
-            </header>
-        </div>
-        <div class="right">
-            <div class="top">
-                <div class="searchBx">
-                    <h2 id="right-top-title" style="color: #433054;">{% block right_top_title %}{% endblock %}</h2>
-                    <div class="inputBx">
-                        <span class="material-symbols-outlined searchOpen">search</span>
-                        <input type="text" placeholder="Search...">
-                        <span class="material-symbols-outlined searchClose">close</span>
-                    </div>
-                </div>
-                <div class="user">
-                    <span class="material-symbols-outlined">notifications</span>
-                    <div class="userImg">
-                        <img src="/static/image/img1.jpg" alt="user">
-                    </div>
-                    <h2 style="color: #433054;">Langa Hasegawa<br><span style="color: #b2a4ba;">Administrator</span></h2>
-                    <div class="arrow">
-                        <span class="material-symbols-outlined">expand_more</span>
-                    </div>
-                    <div class="toggle">
-                        <span class="material-symbols-outlined">menu</span>
-                        <span class="material-symbols-outlined">close</span>
-                    </div>
+        <div class="container" style="border: 0px;">
+            <div class="left"  style="box-shadow: 0 0 5px rgba(0, 0, 0, .1), 0 0 10px rgba(0, 0, 0, .2), 0 0 15px rgba(0, 0, 0, .2);">
+                <header>
+                    {% block content %}{% endblock %}
+                </header>
+                <div class="about">
+                    <a href="/about" style="text-decoration: none;">
+                        <button style="color:#61C160; width:120px; color:white; border-radius:30px;">
+                            About Us
+                        </button>
+                    </a>
                 </div>
             </div>
+            <div class="right">
                 {% block additional_content %}{% endblock %}
+            </div>
         </div>
-    </div>
 
     {% else %}
         <div class="container bg">
@@ -66,30 +62,16 @@
                             <button type="submit" class="role-btn" style="margin-left: 0px">Member</button>
                             <button type="submit" class="role-btn active" style="margin-right: 0px">Admin</button>
                         </div>
-                        <h4 style="color: #4caf50; font-size: 1.3rem;"> PhilHealth Identification Number </h4>
+                        <h4 style="color: #4caf50; font-size: 1.3rem;"> Username </h4>
                         <input type="text" autocomplete="off" name="username" required>
                         <h4 style="color: #4caf50; font-size: 1.3rem;"> Password </h4>
                         <input type="password" autocomplete="off" name="password" required>
                         <button type="submit">Log In</button>
                     </form>
-                    <form action="/register" method="get">
-                        <button href="#" type="submit" class="role-btn" style="border: 0px; width: 60%;">Create PhilHealth Account</button>
-                    </form>
+                    <button type="submit" class="role-btn" style="border: 0px; width: 60%;">Create PhilHealth Account</button>
                 </div>
             </div>
         </div>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="fixed-bottom">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category == 'error' and 'danger' or 'success' }} alert-dismissible fade show m-0 d-flex justify-content-between align-items-center" role="alert" style="border-radius: 0;">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="height: 100%; display: flex; align-items: center; margin-top: 0; padding: 0rem 1rem;"></button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
     {% endif %}
 </body>
 </html>
