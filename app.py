@@ -64,6 +64,7 @@ def get_table_data(table_name):
     cursor.execute(f"PRAGMA table_info({table_name})")
     columns_info = cursor.fetchall()
     column_names = [info[1] for info in columns_info]
+    primary_key_column = next((col[1] for col in columns_info if col[5] == 1), 'id') 
 
     cursor.execute(f"SELECT * FROM {table_name}")
     data = cursor.fetchall()
@@ -75,8 +76,37 @@ def get_table_data(table_name):
 
     return jsonify({
         "columns": column_names,
-        "data": results
+        "data": results,
+        'primary_key': primary_key_column
     })
+    
+@app.route('/get_record/<table_name>/<record_id>', methods=['GET'])
+def get_record(table_name, record_id):
+    if table_name not in ['member', 'dependents', 'membertype']:
+        return jsonify({'success': False, 'message': 'Invalid table name'})
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    cur.execute(f"PRAGMA table_info({table_name})")
+    columns = [row[1] for row in cur.fetchall()]
+
+    # Get the record
+    if table_name == 'dependents':
+        pk_column = 'dependent_id'
+    else:
+        pk_column = 'PhilHealth_ID'  # Assuming 'id' is used for other tables
+    
+    sql = f"SELECT * FROM {table_name} WHERE {pk_column} = ?"
+    cur.execute(sql, (record_id,))
+    record = cur.fetchone()
+    conn.close()
+    
+    if record:
+        record_dict = dict(zip(columns, record))
+        return jsonify(record_dict)
+    else:
+        return jsonify({'success': False, 'message': 'Record not found'})
 
 @app.route("/get_table_schema/<table_name>")
 @login_required
@@ -149,6 +179,28 @@ def about():
 @login_required
 def edit_record():
     return render_template('update.html')
+
+@app.route('/update_record/<table_name>/<pk_value>', methods=['POST'])
+def update_record(table_name, pk_value):
+    if table_name not in ['member', 'dependents', 'membertype']:
+        return jsonify({'success': False, 'message': 'Invalid table name'})
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute(f"PRAGMA table_info({table_name})")
+    columns = [row[1] for row in cur.fetchall()]
+
+    update_data = request.get_json()
+
+    set_clause = ', '.join([f"{col} = ?" for col in update_data.keys()])
+    sql = f"UPDATE {table_name} SET {set_clause} WHERE {'dependent_id' if table_name == 'dependents' else 'PhilHealth_ID'} = ?"
+
+    cur.execute(sql, (*update_data.values(), pk_value))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'success': True, 'message': 'Record updated successfully'})
 
 def errorhandler(e):
     if not isinstance(e, HTTPException):

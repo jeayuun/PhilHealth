@@ -60,234 +60,25 @@
 {% block additional_content %}
 <div class="container right" style="background: rgba(255, 255, 255, 1); margin-right: 0px; width: 98%;">
     <div style="display: flex; justify-content: space-between; margin-left: 12rem; margin-right: 12rem; margin-bottom: 0px;">
-        <button class="table-btn">Member Table</button>
-        <button class="table-btn active">Dependents Table</button>
-        <button class="table-btn">Member Type Table</button>
+        <button class="table-btn" data-table="member">Member Table</button>
+        <button class="table-btn active" data-table="dependents">Dependents Table</button>
+        <button class="table-btn" data-table="membertype">Member Type Table</button>
     </div>
     <div class="table-container">
-        <table>
-            <thead class="attributes">
-                <td>Dependent_ID</td>
-                <td>Dependent_Name</td>
-                <td>Dependent_Relationship</td>
-                <td>Dependent_Birthdate</td>
-                <td>Dependent_Citizenship</td>
-                <td>Disability</td>
-                <td>Philhealth_ID</td>
-                <td class="action" style="color:green;">Actions</td>
+        <table id="data-table">
+            <thead id="table-head" class="attributes">
+                <!-- Table headers will be inserted here -->
             </thead>
-            <tbody>
-                <tr>
-                    <td>0001-0001-2024</td>
-                    <td>DELA CRUZ, KYLA A.</td>
-                    <td>Child</td>
-                    <td>2015-10-15</td>
-                    <td>Filipino</td>
-                    <td>Autism</td>
-                    <td>0101-1234-2024</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0002-0001-2024</td>
-                    <td>REYES, CRIZEL L.</td>
-                    <td>Child</td>
-                    <td>2011-03-12</td>
-                    <td>Filipino</td>
-                    <td>N/A</td>
-                    <td>0102-4567-2023</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0002-0002-2024</td>
-                    <td>REYES, CRISTOPHER L.</td>
-                    <td>Child</td>
-                    <td>2012-05-06</td>
-                    <td>Filipino</td>
-                    <td>N/A</td>
-                    <td>0102-4567-2023</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0003-0001-2024</td>
-                    <td>CRISOSTOMO, MARIA E.</td>
-                    <td>Mother</td>
-                    <td>1955-08-11</td>
-                    <td>Filipino</td>
-                    <td>Deaf</td>
-                    <td>0103-1275-2012</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0004-0001-2024</td>
-                    <td>ARELLANO, BRUCE M.</td>
-                    <td>Child</td>
-                    <td>2009-09-31</td>
-                    <td>Filipino</td>
-                    <td>N/A</td>
-                    <td>0104-1026-2022</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0004-0002-2024</td>
-                    <td>ARELLANO, CAITLYN M.</td>
-                    <td>Child</td>
-                    <td>2011-03-26</td>
-                    <td>Filipino</td>
-                    <td>N/A</td>
-                    <td>0104-1026-2022</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0004-0003-2024</td>
-                    <td>ARELLANO, CASSY M.</td>
-                    <td>Child</td>
-                    <td>2015-01-28</td>
-                    <td>Filipino</td>
-                    <td>N/A</td>
-                    <td>0104-1026-2022</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0005-0001-2024</td>
-                    <td>TRINIDAD, RUEL E.</td>
-                    <td>Spouse</td>
-                    <td>1999-09-20</td>
-                    <td>Filipino</td>
-                    <td>PWD</td>
-                    <td>0105-7821-2020</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0006-0001-2024</td>
-                    <td>OCAMPO, RECHELLE G.</td>
-                    <td>Child</td>
-                    <td>2015-06-29</td>
-                    <td>Filipino</td>
-                    <td>N/A</td>
-                    <td>0107-1283-2018</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0006-0002-2024</td>
-                    <td>OCAMPO, DAVID G.</td>
-                    <td>Child</td>
-                    <td>2017-02-16</td>
-                    <td>Filipino</td>
-                    <td>N/A</td>
-                    <td>0107-1283-2018</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0007-0001-2024</td>
-                    <td>MARASIGAN, ERIN B.</td>
-                    <td>Spouse</td>
-                    <td>1992-09-26</td>
-                    <td>Filipino</td>
-                    <td>N/A</td>
-                    <td>0108-2381-2014</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>0008-0001-2024</td>
-                    <td>MALABANAN, GREGORIA S.</td>
-                    <td>Mother</td>
-                    <td>1960-12-29</td>
-                    <td>Filipino</td>
-                    <td>PWD</td>
-                    <td>0110-5230-2019</td>
-                    <td class="action">
-                        <span class="material-symbols-outlined">
-                            edit
-                        </span>
-                        <span class="material-symbols-outlined">
-                            delete
-                        </span>
-                    </td>
-                </tr>
+            <tbody id="table-body">
+                <!-- Table data will be inserted here -->
             </tbody>
         </table>
     </div>
     <div class="inputBox">
         <input type="text" autocomplete="off" placeholder="Search Records.." id="userInput">
-        <button type="submit">Search</button>
+        <button type="submit" id="searchButton">Search</button>
     </div>
+</div>
     <!-- <div class="table-container">
         <table>
             <thead>
@@ -326,6 +117,176 @@
         {% endif %}
     </div> -->
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tableButtons = document.querySelectorAll('.table-btn');
+        const searchButton = document.getElementById('searchButton');
+        const userInput = document.getElementById('userInput');
+        let currentTable = 'dependents';
+
+        tableButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const tableName = this.getAttribute('data-table');
+                currentTable = tableName;
+                fetchTableData(tableName);
+                tableButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        searchButton.addEventListener('click', () => {
+            const searchValue = userInput.value.trim().toLowerCase();
+            if (searchValue) {
+                searchAndHighlight(searchValue);
+            }
+        });
+
+        function fetchTableData(tableName) {
+            fetch(`/get_table_data/${tableName}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tableHead = document.getElementById('table-head');
+                    const tableBody = document.getElementById('table-body');
+
+                    // Clear existing table data
+                    tableHead.innerHTML = '';
+                    tableBody.innerHTML = '';
+
+                    const id = data.primary_key;
+
+                    if (data.data.length > 0) {
+                        const columnNames = data.columns;
+                        let headerRow = '<tr>';
+                        columnNames.forEach(column => {
+                            headerRow += `<td>${column}</td>`;
+                        });
+                        headerRow += `<td class="action" style="color:green;">Actions</td>`;
+                        headerRow += '</tr>';
+                        tableHead.innerHTML = headerRow;
+
+                        data.data.forEach(row => {
+                            let dataRow = '<tr>';
+                            columnNames.forEach(column => {
+                                dataRow += `<td>${row[column]}</td>`;
+                            });
+                            dataRow += `<td class="action">
+                                    <span class="material-symbols-outlined edit" data-id="${row[id]}">
+                                    edit
+                                    </span>
+                                    <span class="material-symbols-outlined delete" data-id="${row[id]}">
+                                        delete
+                                    </span>
+                                </td>`
+                            dataRow += '</tr>';
+                            tableBody.innerHTML += dataRow;
+                        });
+
+                        const editSpans = document.querySelectorAll('.edit');
+                        editSpans.forEach(span => {
+                            span.addEventListener('click', function() {
+                                const id = this.getAttribute('data-id');
+                                editRecord(tableName, id);
+                            });
+                        });
+
+                        const deleteSpans = document.querySelectorAll('.delete');
+                        deleteSpans.forEach(span => {
+                            span.addEventListener('click', function() {
+                                const id = this.getAttribute('data-id');
+                                deleteRecord(tableName, id);
+                            });
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching table data:', error));
+        }
+
+        function searchAndHighlight(searchValue) {
+            const tableBody = document.getElementById('table-body');
+            const rows = tableBody.getElementsByTagName('tr');
+            let found = false;
+
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                if (cells[0] && cells[0].innerText.trim().toLowerCase() === searchValue) {
+                    rows[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    rows[i].style.backgroundColor = '#ffff99';
+                    setTimeout(() => {
+                        rows[i].style.backgroundColor = '';
+                    }, 2000);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                alert('Record not found');
+            }
+        }
+
+        function editRecord(tableName, id) {
+            console.log(`Edit record with ID: ${id}`); 
+            fetch(`/get_record/${tableName}/${encodeURIComponent(id)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success === false) {
+                        throw new Error(data.message);
+                    }
+                    // Show a form with the record data to edit
+                    const formContainer = document.createElement('div');
+                    formContainer.setAttribute('class', 'form-content');
+                    formContainer.innerHTML = `
+                        <form id="editForm">
+                            <p>EDIT INFORMATION</p>
+                            ${Object.keys(data).map(key => `
+                                <div class="input-container">
+                                    <label for="${key}" class="edit-label">${key}</label>
+                                    <input type="text" id="${key}" name="${key}" value="${data[key]}" class="edit-input">
+                                </div>
+                            `).join('')}
+                            <div class="edit-btn-container">
+                                <button type="submit">Update</button>
+                                <button type="button" onclick="this.parentElement.parentElement.remove()">Cancel</button>
+                            </div>
+                        </form>
+                    `;
+                    document.body.appendChild(formContainer);
+
+                    document.getElementById('editForm').addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        const formData = new FormData(event.target);
+                        const updateData = {};
+                        formData.forEach((value, key) => {
+                            updateData[key] = value;
+                        });
+
+                        fetch(`/update_record/${tableName}/${encodeURIComponent(id)}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(updateData)
+                        }).then(response => response.json())
+                          .then(result => {
+                              if (result.success) {
+                                  alert('Record updated successfully');
+                                  formContainer.remove();
+                                  fetchTableData(tableName);
+                              } else {
+                                  alert('Failed to update record');
+                              }
+                          });
+                    });
+                })
+                .catch(error => console.error('Error fetching record data:', error));
+        }
+
+
+        // Fetch initial data for dependents table
+        fetchTableData('dependents');
+    });
+</script>
+
 
 <style>
     .table-container {
