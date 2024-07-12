@@ -60,195 +60,110 @@
 {% block additional_content %}
 <div class="container right" style="background: rgba(255, 255, 255, 1); margin-right: 0px; width: 98%;">
     <div style="display: flex; justify-content: space-between; margin-left: 12rem; margin-right: 12rem; margin-bottom: 0px;">
-        <button class="table-btn" data-table="member">Member Table</button>
+        <button class="table-btn active" data-table="member">Member Table</button>
         <button class="table-btn" data-table="dependents">Dependents Table</button>
         <button class="table-btn" data-table="membertype">Member Type Table</button>
     </div>
-    <div class="table-container">
-        <table>
-            <thead class="attributes">
-                <!-- Headers will be dynamically generated here -->
-            </thead>
-            <tbody class="table-body">
-                <!-- Inputs will be dynamically generated here -->
-            </tbody>
-        </table>
-    </div>
-    <div class="inputBox" style="bottom: 35px;">
-        <form id="add-form" method="post">
-            <input type="hidden" name="table" id="table-name" value="dependents">
-            <!-- Input fields will be dynamically generated here -->
-            <button type="submit">Add Record</button>
-        </form>
+    <div id="form-container">
+        <!-- Form content will be inserted here -->
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const tableButtons = document.querySelectorAll('.table-btn');
-        const tableNameInput = document.getElementById('table-name');
-        const tableHeaders = document.querySelector('.attributes');
-        const tableBody = document.querySelector('.table-body');
-        const addForm = document.getElementById('add-form');
+        let currentTable = 'member';
 
         tableButtons.forEach(button => {
             button.addEventListener('click', function() {
-                const tableName = this.dataset.table;
-                tableNameInput.value = tableName;
+                const tableName = this.getAttribute('data-table');
+                currentTable = tableName;
                 fetchTableSchema(tableName);
-                fetchTableData(tableName);
                 tableButtons.forEach(btn => btn.classList.remove('active'));
                 this.classList.add('active');
             });
-        });
-
-        addForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formData = new FormData(addForm);
-            const tableName = formData.get('table');
-            const data = Object.fromEntries(formData.entries());
-
-            fetch('/add_record', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(record => {
-                addNewRecord(record);
-                flash('Record added successfully!', 'success');
-            })
-            .catch(error => console.error('Error adding record:', error));
         });
 
         function fetchTableSchema(tableName) {
             fetch(`/get_table_schema/${tableName}`)
                 .then(response => response.json())
                 .then(data => {
-                    populateTableSchema(data);
+                    const formContainer = document.getElementById('form-container');
+                    formContainer.innerHTML = `
+                        <form id="addForm">
+                            <p>ADD NEW RECORD TO ${tableName.toUpperCase()}</p>
+                            ${data.map(column => `
+                                <div class="input-container">
+                                    <label for="${column.name}" class="edit-label">${column.name}</label>
+                                    <input type="text" id="${column.name}" name="${column.name}" class="edit-input">
+                                </div>
+                            `).join('')}
+                            <div class="edit-btn-container">
+                                <button type="submit">Add Record</button>
+                            </div>
+                        </form>
+                    `;
+
+                    document.getElementById('addForm').addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        const formData = new FormData(event.target);
+                        const addData = { table: tableName };
+                        formData.forEach((value, key) => {
+                            addData[key] = value;
+                        });
+
+                        fetch('/add_record', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(addData)
+                        }).then(response => response.json())
+                          .then(result => {
+                              if (result) {
+                                  alert('Record added successfully');
+                                  fetchTableSchema(tableName);
+                              } else {
+                                  alert('Failed to add record');
+                              }
+                          });
+                    });
                 })
                 .catch(error => console.error('Error fetching table schema:', error));
         }
 
-        function populateTableSchema(columns) {
-            tableHeaders.innerHTML = '';
-            tableBody.innerHTML = '';
-
-            const headerRow = document.createElement('tr');
-            const inputRow = document.createElement('tr');
-            inputRow.className = 'input-row';
-
-            columns.forEach(col => {
-                const th = document.createElement('th');
-                th.textContent = col.name;
-                headerRow.appendChild(th);
-
-                const td = document.createElement('td');
-                td.className = 'action';
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.name = col.name;
-                input.placeholder = col.name;
-                td.appendChild(input);
-                inputRow.appendChild(td);
-            });
-
-            tableHeaders.appendChild(headerRow);
-            tableBody.appendChild(inputRow);
-        }
-
-        function fetchTableData(tableName) {
-            fetch(`/get_table_data/${tableName}`)
-                .then(response => response.json())
-                .then(data => {
-                    populateTableData(data.columns, data.data);
-                })
-                .catch(error => console.error('Error fetching table data:', error));
-        }
-
-        function populateTableData(columns, rows) {
-            const inputRow = tableBody.querySelector('.input-row');
-            tableBody.innerHTML = '';
-            tableBody.appendChild(inputRow);
-
-            rows.forEach(row => {
-                const tr = document.createElement('tr');
-                columns.forEach(col => {
-                    const td = document.createElement('td');
-                    td.textContent = row[col];
-                    tr.appendChild(td);
-                });
-                tableBody.appendChild(tr);
-            });
-        }
-
-        function addNewRecord(record) {
-            const columns = Object.keys(record);
-            const values = Object.values(record);
-            const tr = document.createElement('tr');
-            columns.forEach((col, index) => {
-                const td = document.createElement('td');
-                td.textContent = values[index];
-                tr.appendChild(td);
-            });
-            const inputRow = tableBody.querySelector('.input-row');
-            tableBody.insertBefore(tr, inputRow.nextSibling);
-        }
-
-        function flash(message, type) {
-            const flashDiv = document.createElement('div');
-            flashDiv.className = `flash ${type}`;
-            flashDiv.textContent = message;
-            document.body.appendChild(flashDiv);
-            setTimeout(() => {
-                flashDiv.remove();
-            }, 3000);
-        }
-
-        fetchTableSchema('dependents');
-        fetchTableData('dependents');
+        // Fetch initial form for member table
+        fetchTableSchema('member');
     });
 </script>
 
 <style>
-    .table-container {
-        overflow-x: auto;
-        overflow-y: auto;
-        margin-bottom: 70px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12px;
+    .inputBox {
+        margin: 1px auto;
+        bottom: 25px;
+        left: 50%;
+        height: 40px;
+        border-radius: 30px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
         margin-top: 0px;
-        border-color: gray;
     }
 
-    thead, tbody {
-        padding: 8px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-        border-width: 0px;
-        border-color: gray;
-    }
-
-    thead {
-        position: sticky;
-        top: 0;
-    }
-
-    .attributes {
-        background: green;
-        color: white;
-        text-align: center;
+    .action {
+        background: white;
+        color: #55a654;
+        border: 0px;
     }
 
     th, td {
         padding: 8px;
         border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f8f9fa;
     }
 
     td {
@@ -262,19 +177,76 @@
 
     .actions form {
         display: inline;
+
     }
 
-    .action input {
-        width: 100%;
-        height: 30px;
-        background: #fff;
-        justify-content: center;
+    body {
         display: flex;
+        flex-direction: column;
+    }
+
+    .input-container, .edit-input, .edit-label, .edit-btn-container {
+        display: flex;
+    }
+
+    #addForm {
+        height: 500px;
+        overflow-y: auto;
+        border-radius: 30px;
+        background: white;
+    }
+
+    #addForm p {
+        border-radius: 30px;
+        background: green;
+        width: 40%;
         margin: auto;
+        color: white;
         padding: 10px;
-        border: 1.5px solid #55a654;
-        border-radius: 25px;
         text-align: center;
     }
+
+    .form-content {
+        margin-top: 30px;
+        width: 50%;
+        background: linear-gradient(#8cc650, #5FBF5E);
+        border-radius: 30px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, .1),
+            0 0 10px rgba(0, 0, 0, .2),
+            0 0 15px rgba(0, 0, 0, .2);
+    }
+
+    .edit-label {
+        font-size: 15px;
+        color: #2b6a2d;
+        margin: 0;
+        justify-content: flex-start;
+        width: 100%;
+        margin-left: 120px;
+    }
+
+    .input-container {
+        align-items: center;
+        margin: 15px;
+    }
+
+    .edit-input {
+        justify-content: flex-end;
+        width: 100%;
+        margin: 0;
+        margin-right: 120px;
+        border-radius: 30px;
+    }
+
+    .edit-btn-container {
+        gap: 50px;
+        margin: 0 10%;
+    }
+
+    .edit-btn-container button {
+        margin-top: 10px;
+        border-radius: 30px;
+    }
+
 </style>
 {% endblock %}
