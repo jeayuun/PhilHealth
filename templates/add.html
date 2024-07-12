@@ -60,51 +60,24 @@
 {% block additional_content %}
 <div class="container right" style="background: rgba(255, 255, 255, 1); margin-right: 0px; width: 98%;">
     <div style="display: flex; justify-content: space-between; margin-left: 12rem; margin-right: 12rem; margin-bottom: 0px;">
-        <button class="table-btn">Member Table</button>
-        <button class="table-btn">Dependents Table</button>
-        <button class="table-btn">Member Type Table</button>
+        <button class="table-btn" data-table="member">Member Table</button>
+        <button class="table-btn" data-table="dependents">Dependents Table</button>
+        <button class="table-btn" data-table="membertype">Member Type Table</button>
     </div>
     <div class="table-container">
         <table>
             <thead class="attributes">
-                <td>Dependent_ID</td>
-                <td>Dependent_Name</td>
-                <td>Dependent_Relationship</td>
-                <td>Dependent_Birthdate</td>
-                <td>Dependent_Citizenship</td>
-                <td>Disability</td>
-                <td>Philhealth_ID</td>
+                <!-- Headers will be dynamically generated here -->
             </thead>
-            <tbody>
-                <tr>
-                    <td class="action">
-                        <input type="text" name="Dependent_ID" autocomplete="off" placeholder="Dependent ID">
-                    </td>
-                    <td class="action">
-                        <input type="text" name="Dependent_Name" autocomplete="off" placeholder="Dependent Name">
-                    </td>
-                    <td class="action">
-                        <input type="text" name="Dependent_Relationship" autocomplete="off" placeholder="Dependent Relationship">
-                    </td>
-                    <td class="action">
-                        <input type="text" name="Dependent_Birthdate" autocomplete="off" placeholder="Dependent Birthdate">
-                    </td>
-                    <td class="action">
-                        <input type="text" name="Dependent_Citizenship" autocomplete="off" placeholder="Dependent Citizenship">
-                    </td>
-                    <td class="action">
-                        <input type="text" name="Disability" autocomplete="off" placeholder="Disability">
-                    </td>
-                    <td class="action">
-                        <input type="text" name="Philhealth_ID" autocomplete="off" placeholder="PhilHealth ID">
-                    </td>
-                </tr>
+            <tbody class="table-body">
+                <!-- Inputs will be dynamically generated here -->
             </tbody>
         </table>
     </div>
-    <div class="inputBox">
-        <form id="add-form" action="/add_record" method="post">
-            <input type="hidden" name="table" value="dependents">
+    <div class="inputBox" style="bottom: 35px;">
+        <form id="add-form" method="post">
+            <input type="hidden" name="table" id="table-name" value="dependents">
+            <!-- Input fields will be dynamically generated here -->
             <button type="submit">Add Record</button>
         </form>
     </div>
@@ -113,33 +86,137 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const tableButtons = document.querySelectorAll('.table-btn');
+        const tableNameInput = document.getElementById('table-name');
+        const tableHeaders = document.querySelector('.attributes');
+        const tableBody = document.querySelector('.table-body');
+        const addForm = document.getElementById('add-form');
+
         tableButtons.forEach(button => {
             button.addEventListener('click', function() {
-                const tableName = this.innerText.trim().toLowerCase().replace(' table', '');
+                const tableName = this.dataset.table;
+                tableNameInput.value = tableName;
+                fetchTableSchema(tableName);
                 fetchTableData(tableName);
                 tableButtons.forEach(btn => btn.classList.remove('active'));
                 this.classList.add('active');
             });
         });
 
+        addForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(addForm);
+            const tableName = formData.get('table');
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('/add_record', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(record => {
+                addNewRecord(record);
+                flash('Record added successfully!', 'success');
+            })
+            .catch(error => console.error('Error adding record:', error));
+        });
+
+        function fetchTableSchema(tableName) {
+            fetch(`/get_table_schema/${tableName}`)
+                .then(response => response.json())
+                .then(data => {
+                    populateTableSchema(data);
+                })
+                .catch(error => console.error('Error fetching table schema:', error));
+        }
+
+        function populateTableSchema(columns) {
+            tableHeaders.innerHTML = '';
+            tableBody.innerHTML = '';
+
+            const headerRow = document.createElement('tr');
+            const inputRow = document.createElement('tr');
+            inputRow.className = 'input-row';
+
+            columns.forEach(col => {
+                const th = document.createElement('th');
+                th.textContent = col.name;
+                headerRow.appendChild(th);
+
+                const td = document.createElement('td');
+                td.className = 'action';
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = col.name;
+                input.placeholder = col.name;
+                td.appendChild(input);
+                inputRow.appendChild(td);
+            });
+
+            tableHeaders.appendChild(headerRow);
+            tableBody.appendChild(inputRow);
+        }
+
         function fetchTableData(tableName) {
             fetch(`/get_table_data/${tableName}`)
                 .then(response => response.json())
                 .then(data => {
-                    // Optional: Populate table with data
+                    populateTableData(data.columns, data.data);
                 })
                 .catch(error => console.error('Error fetching table data:', error));
         }
 
-        // Fetch initial data for dependents table
+        function populateTableData(columns, rows) {
+            const inputRow = tableBody.querySelector('.input-row');
+            tableBody.innerHTML = '';
+            tableBody.appendChild(inputRow);
+
+            rows.forEach(row => {
+                const tr = document.createElement('tr');
+                columns.forEach(col => {
+                    const td = document.createElement('td');
+                    td.textContent = row[col];
+                    tr.appendChild(td);
+                });
+                tableBody.appendChild(tr);
+            });
+        }
+
+        function addNewRecord(record) {
+            const columns = Object.keys(record);
+            const values = Object.values(record);
+            const tr = document.createElement('tr');
+            columns.forEach((col, index) => {
+                const td = document.createElement('td');
+                td.textContent = values[index];
+                tr.appendChild(td);
+            });
+            const inputRow = tableBody.querySelector('.input-row');
+            tableBody.insertBefore(tr, inputRow.nextSibling);
+        }
+
+        function flash(message, type) {
+            const flashDiv = document.createElement('div');
+            flashDiv.className = `flash ${type}`;
+            flashDiv.textContent = message;
+            document.body.appendChild(flashDiv);
+            setTimeout(() => {
+                flashDiv.remove();
+            }, 3000);
+        }
+
+        fetchTableSchema('dependents');
         fetchTableData('dependents');
     });
 </script>
 
 <style>
     .table-container {
-        height: 500px;
+        overflow-x: auto;
         overflow-y: auto;
+        margin-bottom: 70px;
     }
 
     table {
@@ -172,10 +249,6 @@
     th, td {
         padding: 8px;
         border-bottom: 1px solid #ddd;
-    }
-
-    th {
-        background-color: #f8f9fa;
     }
 
     td {
