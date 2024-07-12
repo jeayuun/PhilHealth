@@ -58,103 +58,241 @@
 {% endblock %}
 
 {% block additional_content %}
-<div class="container right" style="background: rgba(255, 255, 255, 1); margin-right: 0px; width: 98%;">
-    <div style="display: flex; justify-content: space-between; margin-left: 12rem; margin-right: 12rem; margin-bottom: 0px;">
-        <button class="query-btn active">Simple-Level Query</button>
-        <button class="query-btn">Moderate-Level Query</button>
-        <button class="query-btn">Difficult-Level Query</button>
+    <div class="container right" style="background: rgba(255, 255, 255, 1); margin-right: 0px; width: 98%; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; margin-left: 12rem; margin-right: 12rem; margin-bottom: 0px;">
+            <button class="query-btn active" data-index="0">Simple-Level Query</button>
+            <button class="query-btn" data-index="1">Moderate-Level Query</button>
+            <button class="query-btn" data-index="2">Difficult-Level Query</button>
+        </div>
+
+        <!-- Simple-Level Query -->
+        <div class="query-section" data-index="0" style="display: none; margin-top: 20px;">
+            <!-- Table for male members -->
+            <div>
+                <h4 style="color: #2b6a2d; font-size: 1rem;">Display names of male members:</h4>
+                <div class="table-container">
+                    <table>
+                        <thead class="attributes">
+                            <td>Members_Name</td>
+                            <td>Sex</td>
+                        </thead>
+                        <tbody>
+                            {% for row in male_members %}
+                            <tr>
+                                <td>{{ row['Members_Name'] }}</td>
+                                <td>{{ row['Sex'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Table for members in Manila -->
+            <div style="margin-top: 20px;">
+                <h4 style="color: #2b6a2d; font-size: 1rem;">Display names of members that reside in Manila:</h4>
+                <div class="table-container">
+                    <table>
+                        <thead class="attributes">
+                            <td>Member's Name</td>
+                        </thead>
+                        <tbody>
+                            {% for row in manila_members %}
+                            <tr>
+                                <td>{{ row['Members_Name'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Table for dependents -->
+            <div style="margin-top: 20px;">
+                <h4 style="color: #2b6a2d; font-size: 1rem;">Display dependents born between 2000 and 2015:</h4>
+                <div class="table-container">
+                    <table>
+                        <thead class="attributes">
+                            <td>Dependent ID</td>
+                            <td>Dependent Name</td>
+                            <td>Dependent Birthdate</td>
+                        </thead>
+                        <tbody>
+                            {% for row in dependents %}
+                            <tr>
+                                <td>{{ row['Dependent_ID'] }}</td>
+                                <td>{{ row['Dependent_Name'] }}</td>
+                                <td>{{ row['Dependent_Birthdate'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Moderate-Level Query -->
+        <div class="query-section" data-index="1" style="margin-top: 20px;">
+            <!-- Table for professions with total income > 40,000 -->
+            <div>
+                <h4 style="color: #2b6a2d; font-size: 1rem;">Professions where the total monthly income exceeds 40,000:</h4>
+                <div class="table-container">
+                    <table>
+                        <thead class="attributes">
+                            <td>Profession</td>
+                            <td>Total Income</td>
+                        </thead>
+                        <tbody>
+                            {% for row in professions_income %}
+                            <tr>
+                                <td>{{ row['Profession'] }}</td>
+                                <td>{{ row['Total_Income'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Table for members with more than one dependent -->
+            <div style="margin-top: 20px;">
+                <h4 style="color: #2b6a2d; font-size: 1rem;">Members who have more than one dependent:</h4>
+                <div class="table-container">
+                    <table>
+                        <thead class="attributes">
+                            <td>PhilHealth ID</td>
+                            <td scope="col">Total Dependents</td>
+                        </thead>
+                        <tbody>
+                            {% for row in members_dependents %}
+                            <tr>
+                                <td>{{ row['Philhealth_ID'] }}</td>
+                                <td>{{ row['Total_Dependents'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Table for average age and count by civil status -->
+            <div style="margin-top: 20px;">
+                <h4 style="color: #2b6a2d; font-size: 1rem;">Average age and count of members grouped by civil status:</h4>
+                <div class="table-container">
+                    <table>
+                        <thead class="attributes">
+                            <td>Civil Status</td>
+                            <td>Average Age</td>
+                            <td>Total Members</td>
+                        </thead>
+                        <tbody>
+                            {% for row in age_civil_status %}
+                            <tr>
+                                <td>{{ row['Civil_Status'] }}</td>
+                                <td>{{ row['Average_Age'] | round(2) }}</td>
+                                <td>{{ row['Total_Members'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Table for max and min age by civil status -->
+            <div style="margin-top: 20px;">
+                <h4 style="color: #2b6a2d; font-size: 1rem;">Maximum and minimum age of members grouped by civil status:</h4>
+                <div class="table-container">
+                    <table>
+                        <thead class="attributes">
+                            <td>Civil Status</td>
+                            <td>Max Age</td>
+                            <td>Min Age</td>
+                        </thead>
+                        <tbody>
+                            {% for row in age_extremes_civil_status %}
+                            <tr>
+                                <td>{{ row['Civil_Status'] }}</td>
+                                <td>{{ row['Max_Age'] }}</td>
+                                <td>{{ row['Min_Age'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Difficult-Level Query Example-->
+        <div class="query-section" data-index="2" style="display: none; margin-top: 20px;">
+            <!-- Table for members with more than 2 dependents -->
+            <div>
+                <h4 style="color: #2b6a2d; font-size: 1rem;">Members with more than 2 dependents:</h4>
+                <div class="table-container">
+                    <table>
+                        <thead class="attributes">
+                            <td>Member's Name</td>
+                            <td>Dependent Count</td>
+                        </thead>
+                        <tbody>
+                            {% for row in members_with_dependents %}
+                            <tr>
+                                <td>{{ row['Members_Name'] }}</td>
+                                <td>{{ row['Dependent_Count'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Table for high-income members -->
+            <div style="margin-top: 20px;">
+                <h4 style="color: #2b6a2d; font-size: 1rem;">Members with income above 50,000:</h4>
+                <div class="table-container">
+                    <table>
+                        <thead class="attributes">
+                            <td>Member's Name</td>
+                            <td>Profession</td>
+                            <td>Monthly Income</td>
+                        </thead>
+                        <tbody>
+                            {% for row in high_income_members %}
+                            <tr>
+                                <td>{{ row['Members_Name'] }}</td>
+                                <td>{{ row['Profession'] }}</td>
+                                <td>{{ row['Monthly_Income'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="table-container">
-        <h4 style="color: #2b6a2d; font-size: 1rem;"> Display names of male members: </h4>
-        <table>
-            <thead class="attributes">
-                <td>Members_Name</td>
-                <td>Sex</td>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>DELA CRUZ, JUAN B. JR</td>
-                    <td>M</td>
-                </tr>
-                <tr>
-                    <td>REYES, PAUL JOHN D.</td>
-                    <td>M</td>
-                </tr>
-                <tr>
-                    <td>ARELLANO, DAVE G.</td>
-                    <td>M</td>
-                </tr>
-                <tr>
-                    <td>MARASIGAN, IGNACIO F.</td>
-                    <td>M</td>
-                </tr>
-            </tbody>
-        </table>
-        <h4 style="color: #2b6a2d; font-size: 1rem;"> Display names of members that resides in Manila: </h4>
-        <table>
-            <thead class="attributes">
-                <td>Members_Name</td>
-                <td>Address</td>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>DELA CRUZ, JUAN B. JR</td>
-                    <td>833 SISA ST., BARANGAY 526, ZONE 52, SAMPALOC, MANILA</td>
-                </tr>
-                <tr>
-                    <td>REYES, PAUL JOHN D.</td>
-                    <td>108 GEN. CONCEPTION ST., CALOOCAN CITY, METRO MANILA</td>
-                </tr>
-                <tr>
-                    <td>ARELLANO, DAVE G.</td>
-                    <td>73 ROOSEVELT AVENUE, SFDM, QUEZON CITY, METRO MANILA</td>
-                </tr>
-                <tr>
-                    <td>MARASIGAN, IGNACIO F.</td>
-                    <td>1081 EDSA BALINTAWAK, QUEZON CITY, METRO MANILA</td>
-                </tr>
-                <tr>
-                    <td>JAVIER, LUCIA M.</td>
-                    <td>25 EAST CAPITOL DRIVE, PASIG, METRO MANILA</td>
-                </tr>
-            </tbody>
-        </table>
-        <h4 style="color: #2b6a2d; font-size: 1rem;"> Retrieve dependents born between January 1, 2000 and January 1, 2015: </h4>
-        <table>
-            <thead class="attributes">
-                <td>Dependent_ID</td>
-                <td>Dependent_Name</td>
-                <td>Dependent_Birthdate</td>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>0002-0001-2024</td>
-                    <td>REYES, CRIZEL L.</td>
-                    <td>2011-03-12</td>
-                </tr>
-                <tr>
-                    <td>0002-0002-2024</td>
-                    <td>REYES, CRISTOPHER L.</td>
-                    <td>2012-05-06</td>
-                </tr>
-                <tr>
-                    <td>0004-0001-2024</td>
-                    <td>ARELLANO, BRUCE M.</td>
-                    <td>2009-09-31</td>
-                </tr>
-                <tr>
-                    <td>0004-0002-2024 </td>
-                    <td>ARELLANO, CAITLYN M.</td>
-                    <td>2011-03-26</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const queryButtons = document.querySelectorAll(".query-btn");
+        const querySections = document.querySelectorAll(".query-section");
+
+        queryButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                queryButtons.forEach(btn => btn.classList.remove("active"));
+                button.classList.add("active");
+
+                const index = button.getAttribute("data-index");
+                querySections.forEach(section => section.style.display = "none");
+                document.querySelector(`.query-section[data-index="${index}"]`).style.display = "block";
+            });
+        });
+
+        // Initially display the active section
+        document.querySelector(".query-btn.active").click();
+    });
+</script>
 
 <style>
     .table-container {
-        height: 500px;
         overflow-y: auto;
     }
 
