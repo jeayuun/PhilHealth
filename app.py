@@ -202,6 +202,31 @@ def update_record(table_name, pk_value):
 
     return jsonify({'success': True, 'message': 'Record updated successfully'})
 
+@app.route('/delete_record/<table_name>/<pk_value>', methods=['DELETE'])
+def delete_record(table_name, pk_value):
+    if table_name not in ['member', 'dependents', 'membertype']:
+        return jsonify({'success': False, 'message': 'Invalid table name'})
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Determine the primary key column for the table
+        pk_column = 'dependent_id' if table_name == 'dependents' else 'PhilHealth_ID'
+
+        # Construct the SQL DELETE statement
+        sql = f"DELETE FROM {table_name} WHERE {pk_column} = ?"
+
+        # Execute the SQL statement
+        cur.execute(sql, (pk_value,))
+        conn.commit()
+        conn.close()
+
+        return jsonify({'success': True, 'message': 'Record deleted successfully'})
+    
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
+
 def errorhandler(e):
     if not isinstance(e, HTTPException):
         e = InternalServerError()
