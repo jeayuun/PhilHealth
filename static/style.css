@@ -330,22 +330,6 @@ main {
     letter-spacing: 0.7px;
 }
 
-.inputBox {
-    margin: 1px auto;
-    position: absolute;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 40px;
-    border-radius: 30px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
-    margin-top: 0px;
-}
-
 .inputBox button {
     width: 200px;
     border-radius: 30px;
@@ -444,63 +428,3 @@ main {
     }
 }
 
-/* Update */
-body {
-    display: flex;
-    flex-direction: column;
-    margin: 2% 0;
-}
-
-body, .input-container, .edit-input, .edit-label, .edit-btn-container {
-    display: flex;
-}
-
-#editForm {
-    border-radius: 2%;
-    background: white;
-    margin: 2%;
-}
-
-#editForm p {
-    padding: 7% 0 0 5%;
-    font-size: 25px;
-}
-
-.form-content {
-    margin-top: 5%;
-    width: 50%;
-    background: linear-gradient(#8cc650, #5FBF5E);
-    border-radius: 2%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, .1),
-        0 0 10px rgba(0, 0, 0, .2),
-        0 0 15px rgba(0, 0, 0, .2);
-}
-
-.edit-label {
-    font-size: 20px;
-    color: black;
-    margin: 0;
-    justify-content: flex-start;
-    width: 100%;
-}
-
-.input-container {
-    align-items: center;
-    margin: 5%;
-}
-
-.edit-input {
-    justify-content: flex-end;
-    width: 100%;
-    margin: 0;
-}
-
-.edit-btn-container {
-    gap: 50px;
-    margin: 0 10%;
-    padding-bottom: 5%;
-}
-
-.edit-btn-container button {
-    margin-top: 10px;
-}
