@@ -1,0 +1,207 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Dashboard: Add Record
+{% endblock %}
+
+{% block content %}
+    <div class="logo">
+        <img src="/static/image/logov2.png" alt="PhilHealth Logo" width="80%">
+        <div class="close">
+            <span class="material-symbols-outlined">close</span>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li>
+                <a href="/" id="dashboard-link">
+                    <span class="material-symbols-outlined">
+                        visibility
+                    </span>
+                    <span class="title">
+                        View
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="/add" id="add-link" class="fill">
+                    <span class="material-symbols-outlined full">
+                        add_box
+                    </span>
+                    <span class="title-full">
+                        Add
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="/update" id="edit-link">
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+                    <span class="title">
+                        Update
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="/mysql" id="sql-link">
+                    <span class="material-symbols-outlined">
+                        integration_instructions
+                    </span>
+                    <span class="title">
+                        MySQL
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block additional_content %}
+<div class="container right" style="background: rgba(255, 255, 255, 1); margin-right: 0px; width: 98%;">
+    <div style="display: flex; justify-content: space-between; margin-left: 12rem; margin-right: 12rem; margin-bottom: 0px;">
+        <button class="table-btn">Member Table</button>
+        <button class="table-btn">Dependents Table</button>
+        <button class="table-btn">Member Type Table</button>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead class="attributes">
+                <td>Dependent_ID</td>
+                <td>Dependent_Name</td>
+                <td>Dependent_Relationship</td>
+                <td>Dependent_Birthdate</td>
+                <td>Dependent_Citizenship</td>
+                <td>Disability</td>
+                <td>Philhealth_ID</td>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="action">
+                        <input type="text" name="Dependent_ID" autocomplete="off" placeholder="Dependent ID">
+                    </td>
+                    <td class="action">
+                        <input type="text" name="Dependent_Name" autocomplete="off" placeholder="Dependent Name">
+                    </td>
+                    <td class="action">
+                        <input type="text" name="Dependent_Relationship" autocomplete="off" placeholder="Dependent Relationship">
+                    </td>
+                    <td class="action">
+                        <input type="text" name="Dependent_Birthdate" autocomplete="off" placeholder="Dependent Birthdate">
+                    </td>
+                    <td class="action">
+                        <input type="text" name="Dependent_Citizenship" autocomplete="off" placeholder="Dependent Citizenship">
+                    </td>
+                    <td class="action">
+                        <input type="text" name="Disability" autocomplete="off" placeholder="Disability">
+                    </td>
+                    <td class="action">
+                        <input type="text" name="Philhealth_ID" autocomplete="off" placeholder="PhilHealth ID">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="inputBox">
+        <form id="add-form" action="/add_record" method="post">
+            <input type="hidden" name="table" value="dependents">
+            <button type="submit">Add Record</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tableButtons = document.querySelectorAll('.table-btn');
+        tableButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const tableName = this.innerText.trim().toLowerCase().replace(' table', '');
+                fetchTableData(tableName);
+                tableButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function fetchTableData(tableName) {
+            fetch(`/get_table_data/${tableName}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Optional: Populate table with data
+                })
+                .catch(error => console.error('Error fetching table data:', error));
+        }
+
+        // Fetch initial data for dependents table
+        fetchTableData('dependents');
+    });
+</script>
+
+<style>
+    .table-container {
+        height: 500px;
+        overflow-y: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        margin-top: 0px;
+        border-color: gray;
+    }
+
+    thead, tbody {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        border-width: 0px;
+        border-color: gray;
+    }
+
+    thead {
+        position: sticky;
+        top: 0;
+    }
+
+    .attributes {
+        background: green;
+        color: white;
+        text-align: center;
+    }
+
+    th, td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f8f9fa;
+    }
+
+    td {
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+    }
+
+    .actions {
+        white-space: nowrap;
+    }
+
+    .actions form {
+        display: inline;
+    }
+
+    .action input {
+        width: 100%;
+        height: 30px;
+        background: #fff;
+        justify-content: center;
+        display: flex;
+        margin: auto;
+        padding: 10px;
+        border: 1.5px solid #55a654;
+        border-radius: 25px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
