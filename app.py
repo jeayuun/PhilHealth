@@ -64,7 +64,7 @@ def get_table_data(table_name):
     cursor.execute(f"PRAGMA table_info({table_name})")
     columns_info = cursor.fetchall()
     column_names = [info[1] for info in columns_info]
-    primary_key_column = next((col[1] for col in columns_info if col[5] == 1), 'id') 
+    primary_key_column = next((col[1] for col in columns_info if col[5] == 1), 'id')
 
     cursor.execute(f"SELECT * FROM {table_name}")
     data = cursor.fetchall()
@@ -79,7 +79,7 @@ def get_table_data(table_name):
         "data": results,
         'primary_key': primary_key_column
     })
-    
+
 @app.route('/get_record/<table_name>/<record_id>', methods=['GET'])
 def get_record(table_name, record_id):
     if table_name not in ['member', 'dependents', 'membertype']:
@@ -87,21 +87,18 @@ def get_record(table_name, record_id):
 
     conn = get_db_connection()
     cur = conn.cursor()
-    
+
     cur.execute(f"PRAGMA table_info({table_name})")
     columns = [row[1] for row in cur.fetchall()]
 
-    # Get the record
-    if table_name == 'dependents':
-        pk_column = 'dependent_id'
-    else:
-        pk_column = 'PhilHealth_ID'  # Assuming 'id' is used for other tables
-    
+    # Determine the primary key column for the table
+    pk_column = 'dependent_id' if table_name == 'dependents' else 'PhilHealth_ID'
+
     sql = f"SELECT * FROM {table_name} WHERE {pk_column} = ?"
     cur.execute(sql, (record_id,))
     record = cur.fetchone()
     conn.close()
-    
+
     if record:
         record_dict = dict(zip(columns, record))
         return jsonify(record_dict)
@@ -123,47 +120,30 @@ def get_table_schema(table_name):
 @app.route("/add", methods=["GET", "POST"])
 @login_required
 def add():
-    if request.method == "POST":
-        table_name = request.form.get("table_name")
-        columns = request.form.getlist("columns[]")
-        values = request.form.getlist("values[]")
-        placeholders = ", ".join(["?"] * len(values))
-
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute(f"INSERT INTO {table_name} ({', '.join(columns)}) VALUES ({placeholders})", values)
-        conn.commit()
-        conn.close()
-
-        flash("Record added successfully!", "success")
-        return redirect("/")
-
     return render_template("add.html")
 
-@app.route("/add_record", methods=["POST"])
-@login_required
+@app.route('/add_record', methods=['POST'])
 def add_record():
-    data = request.form
-    table_name = data.get('table')
-    # Extract column names and values from the form
-    columns = data.keys()
-    values = [data.get(col) for col in columns]
+    data = request.json
+    table_name = data.pop('table')
+
+    columns = ', '.join(data.keys())
+    placeholders = ', '.join(['?' for _ in data.keys()])
+    values = tuple(data.values())
 
     conn = get_db_connection()
     cursor = conn.cursor()
-
-    # Construct SQL query
-    columns_str = ", ".join(columns)
-    placeholders = ", ".join(["?"] * len(values))  # SQLite uses '?' for placeholders
-    query = f"INSERT INTO {table_name} ({columns_str}) VALUES ({placeholders})"
-
-    cursor.execute(query, values)
+    cursor.execute(f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})", values)
     conn.commit()
+
+    # Fetch the newly added record to return
+    cursor.execute(f"SELECT * FROM {table_name} WHERE rowid = last_insert_rowid()")
+    new_record = cursor.fetchone()
+    column_names = [description[0] for description in cursor.description]  # Get column names
+    new_record_dict = dict(zip(column_names, new_record))
     conn.close()
 
-    flash(f"Record added to {table_name} successfully!", "success")
-    return redirect("/add")
-
+    return jsonify(new_record_dict)
 
 @app.route("/mysql")
 @login_required
@@ -223,7 +203,7 @@ def delete_record(table_name, pk_value):
         conn.close()
 
         return jsonify({'success': True, 'message': 'Record deleted successfully'})
-    
+
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)})
 
