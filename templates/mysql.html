@@ -1,0 +1,227 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Dashboard: View SQL Codes
+{% endblock %}
+
+{% block content %}
+    <div class="logo">
+        <img src="/static/image/logov2.png" alt="PhilHealth Logo" width="80%">
+        <div class="close">
+            <span class="material-symbols-outlined">close</span>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li>
+                <a href="/" id="dashboard-link">
+                    <span class="material-symbols-outlined">
+                        visibility
+                    </span>
+                    <span class="title">
+                        View
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="/add" id="add-link">
+                    <span class="material-symbols-outlined">
+                        add_box
+                    </span>
+                    <span class="title">
+                        Add
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="/update" id="edit-link">
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+                    <span class="title">
+                        Update
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="/mysql" id="sql-link" class="fill">
+                    <span class="material-symbols-outlined full">
+                        integration_instructions
+                    </span>
+                    <span class="title-full">
+                        MySQL
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block additional_content %}
+<div class="container right" style="background: rgba(255, 255, 255, 1); margin-right: 0px; width: 98%;">
+    <div style="display: flex; justify-content: space-between; margin-left: 12rem; margin-right: 12rem; margin-bottom: 0px;">
+        <button class="query-btn active">Simple-Level Query</button>
+        <button class="query-btn">Moderate-Level Query</button>
+        <button class="query-btn">Difficult-Level Query</button>
+    </div>
+    <div class="table-container">
+        <h4 style="color: #2b6a2d; font-size: 1rem;"> Display names of male members: </h4>
+        <table>
+            <thead class="attributes">
+                <td>Members_Name</td>
+                <td>Sex</td>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>DELA CRUZ, JUAN B. JR</td>
+                    <td>M</td>
+                </tr>
+                <tr>
+                    <td>REYES, PAUL JOHN D.</td>
+                    <td>M</td>
+                </tr>
+                <tr>
+                    <td>ARELLANO, DAVE G.</td>
+                    <td>M</td>
+                </tr>
+                <tr>
+                    <td>MARASIGAN, IGNACIO F.</td>
+                    <td>M</td>
+                </tr>
+            </tbody>
+        </table>
+        <h4 style="color: #2b6a2d; font-size: 1rem;"> Display names of members that resides in Manila: </h4>
+        <table>
+            <thead class="attributes">
+                <td>Members_Name</td>
+                <td>Address</td>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>DELA CRUZ, JUAN B. JR</td>
+                    <td>833 SISA ST., BARANGAY 526, ZONE 52, SAMPALOC, MANILA</td>
+                </tr>
+                <tr>
+                    <td>REYES, PAUL JOHN D.</td>
+                    <td>108 GEN. CONCEPTION ST., CALOOCAN CITY, METRO MANILA</td>
+                </tr>
+                <tr>
+                    <td>ARELLANO, DAVE G.</td>
+                    <td>73 ROOSEVELT AVENUE, SFDM, QUEZON CITY, METRO MANILA</td>
+                </tr>
+                <tr>
+                    <td>MARASIGAN, IGNACIO F.</td>
+                    <td>1081 EDSA BALINTAWAK, QUEZON CITY, METRO MANILA</td>
+                </tr>
+                <tr>
+                    <td>JAVIER, LUCIA M.</td>
+                    <td>25 EAST CAPITOL DRIVE, PASIG, METRO MANILA</td>
+                </tr>
+            </tbody>
+        </table>
+        <h4 style="color: #2b6a2d; font-size: 1rem;"> Retrieve dependents born between January 1, 2000 and January 1, 2015: </h4>
+        <table>
+            <thead class="attributes">
+                <td>Dependent_ID</td>
+                <td>Dependent_Name</td>
+                <td>Dependent_Birthdate</td>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0002-0001-2024</td>
+                    <td>REYES, CRIZEL L.</td>
+                    <td>2011-03-12</td>
+                </tr>
+                <tr>
+                    <td>0002-0002-2024</td>
+                    <td>REYES, CRISTOPHER L.</td>
+                    <td>2012-05-06</td>
+                </tr>
+                <tr>
+                    <td>0004-0001-2024</td>
+                    <td>ARELLANO, BRUCE M.</td>
+                    <td>2009-09-31</td>
+                </tr>
+                <tr>
+                    <td>0004-0002-2024 </td>
+                    <td>ARELLANO, CAITLYN M.</td>
+                    <td>2011-03-26</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .table-container {
+        height: 500px;
+        overflow-y: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        margin-top: 0px;
+        margin-bottom: 20px;
+        border-color: gray;
+        overflow-y: auto;
+        height: 40%;
+    }
+
+    thead, tbody {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        border-width: 0px;
+        border-color: gray;
+    }
+
+    .attributes{
+        background: green;
+        color: white;
+        text-align: center;
+    }
+
+    .action {
+        background: white;
+        color: #55a654;
+        border: 0px;
+    }
+
+    th, td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f8f9fa;
+    }
+
+    td {
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+    }
+
+    .actions {
+        white-space: nowrap;
+    }
+
+    .actions form {
+        display: inline;
+
+    }
+
+    .active {
+        background: #55a654;
+        color: #fff;
+    }
+
+    .query-btn {
+	width: 70%;
+	margin: 10px;
+	margin-bottom: 8px;
+}
+</style>
+{% endblock %}
+
