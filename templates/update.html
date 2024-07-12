@@ -1,0 +1,390 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Dashboard: Update Record
+{% endblock %}
+
+{% block content %}
+    <div class="logo">
+        <img src="/static/image/logov2.png" alt="PhilHealth Logo" width="80%">
+        <div class="close">
+            <span class="material-symbols-outlined">close</span>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li>
+                <a href="/" id="dashboard-link">
+                    <span class="material-symbols-outlined">
+                        visibility
+                    </span>
+                    <span class="title">
+                        View
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="/add" id="add-link">
+                    <span class="material-symbols-outlined">
+                        add_box
+                    </span>
+                    <span class="title">
+                        Add
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="/update" id="edit-link" class="fill">
+                    <span class="material-symbols-outlined full">
+                        edit
+                    </span>
+                    <span class="title-full">
+                        Update
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="/mysql" id="sql-link">
+                    <span class="material-symbols-outlined">
+                        integration_instructions
+                    </span>
+                    <span class="title">
+                        MySQL
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block additional_content %}
+<div class="container right" style="background: rgba(255, 255, 255, 1); margin-right: 0px; width: 98%;">
+    <div style="display: flex; justify-content: space-between; margin-left: 12rem; margin-right: 12rem; margin-bottom: 0px;">
+        <button class="table-btn">Member Table</button>
+        <button class="table-btn active">Dependents Table</button>
+        <button class="table-btn">Member Type Table</button>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead class="attributes">
+                <td>Dependent_ID</td>
+                <td>Dependent_Name</td>
+                <td>Dependent_Relationship</td>
+                <td>Dependent_Birthdate</td>
+                <td>Dependent_Citizenship</td>
+                <td>Disability</td>
+                <td>Philhealth_ID</td>
+                <td class="action" style="color:green;">Actions</td>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0001-0001-2024</td>
+                    <td>DELA CRUZ, KYLA A.</td>
+                    <td>Child</td>
+                    <td>2015-10-15</td>
+                    <td>Filipino</td>
+                    <td>Autism</td>
+                    <td>0101-1234-2024</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0002-0001-2024</td>
+                    <td>REYES, CRIZEL L.</td>
+                    <td>Child</td>
+                    <td>2011-03-12</td>
+                    <td>Filipino</td>
+                    <td>N/A</td>
+                    <td>0102-4567-2023</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0002-0002-2024</td>
+                    <td>REYES, CRISTOPHER L.</td>
+                    <td>Child</td>
+                    <td>2012-05-06</td>
+                    <td>Filipino</td>
+                    <td>N/A</td>
+                    <td>0102-4567-2023</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0003-0001-2024</td>
+                    <td>CRISOSTOMO, MARIA E.</td>
+                    <td>Mother</td>
+                    <td>1955-08-11</td>
+                    <td>Filipino</td>
+                    <td>Deaf</td>
+                    <td>0103-1275-2012</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0004-0001-2024</td>
+                    <td>ARELLANO, BRUCE M.</td>
+                    <td>Child</td>
+                    <td>2009-09-31</td>
+                    <td>Filipino</td>
+                    <td>N/A</td>
+                    <td>0104-1026-2022</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0004-0002-2024</td>
+                    <td>ARELLANO, CAITLYN M.</td>
+                    <td>Child</td>
+                    <td>2011-03-26</td>
+                    <td>Filipino</td>
+                    <td>N/A</td>
+                    <td>0104-1026-2022</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0004-0003-2024</td>
+                    <td>ARELLANO, CASSY M.</td>
+                    <td>Child</td>
+                    <td>2015-01-28</td>
+                    <td>Filipino</td>
+                    <td>N/A</td>
+                    <td>0104-1026-2022</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0005-0001-2024</td>
+                    <td>TRINIDAD, RUEL E.</td>
+                    <td>Spouse</td>
+                    <td>1999-09-20</td>
+                    <td>Filipino</td>
+                    <td>PWD</td>
+                    <td>0105-7821-2020</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0006-0001-2024</td>
+                    <td>OCAMPO, RECHELLE G.</td>
+                    <td>Child</td>
+                    <td>2015-06-29</td>
+                    <td>Filipino</td>
+                    <td>N/A</td>
+                    <td>0107-1283-2018</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0006-0002-2024</td>
+                    <td>OCAMPO, DAVID G.</td>
+                    <td>Child</td>
+                    <td>2017-02-16</td>
+                    <td>Filipino</td>
+                    <td>N/A</td>
+                    <td>0107-1283-2018</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0007-0001-2024</td>
+                    <td>MARASIGAN, ERIN B.</td>
+                    <td>Spouse</td>
+                    <td>1992-09-26</td>
+                    <td>Filipino</td>
+                    <td>N/A</td>
+                    <td>0108-2381-2014</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>0008-0001-2024</td>
+                    <td>MALABANAN, GREGORIA S.</td>
+                    <td>Mother</td>
+                    <td>1960-12-29</td>
+                    <td>Filipino</td>
+                    <td>PWD</td>
+                    <td>0110-5230-2019</td>
+                    <td class="action">
+                        <span class="material-symbols-outlined">
+                            edit
+                        </span>
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="inputBox">
+        <input type="text" autocomplete="off" placeholder="Search Records.." id="userInput">
+        <button type="submit">Search</button>
+    </div>
+    <!-- <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    {% if records %}
+                        {% for key in records[0].keys() %}
+                            <th>{{ key }}</th>
+                        {% endfor %}
+                        <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                    <tr>
+                        {% for value in record.values() %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                        <td class="actions">
+                            <form action="{{ url_for('edit_record') }}" method="get" style="display:inline;">
+                                <input type="hidden" name="id" value="{{ record.id }}">
+                                <input type="hidden" name="table" value="{{ table }}">
+                                <button type="submit">Edit</button>
+                            </form>
+                            <form action="{{ url_for('delete_record') }}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="{{ record.id }}">
+                                <input type="hidden" name="table" value="{{ table }}">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h4 style="color: #999; font-size: 1.3rem; text-align: center;"> No records found. </h4>
+        {% endif %}
+    </div> -->
+</div>
+
+<style>
+    .table-container {
+        height: 500px;
+        overflow-y: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        margin-top: 0px;
+        border-color: gray;
+        overflow-y: auto;
+        height: 100%;
+    }
+
+    thead, tbody {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        border-width: 0px;
+        border-color: gray;
+    }
+
+    .attributes{
+        background: green;
+        color: white;
+        text-align: center;
+    }
+
+    .action {
+        background: white;
+        color: #55a654;
+        border: 0px;
+    }
+
+    th, td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f8f9fa;
+    }
+
+    td {
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+    }
+
+    .actions {
+        white-space: nowrap;
+    }
+
+    .actions form {
+        display: inline;
+
+    }
+</style>
+{% endblock %}
+
