@@ -5,3 +5,8 @@
 <img src="https://github.com/jeayuun/PhilHealth/blob/main/static/UI/Add_%20Member.png">
 <img src="https://github.com/jeayuun/PhilHealth/blob/main/static/UI/Add_%20Dependent.png">
 <img src="https://github.com/jeayuun/PhilHealth/blob/main/static/UI/Add_%20Member%20Type.png">
+<img src="https://github.com/jeayuun/PhilHealth/blob/main/static/UI/UPDATE.png">
+<img src="https://github.com/jeayuun/PhilHealth/blob/main/static/UI/UPDATE%20FORM.png">
+<img src="https://github.com/jeayuun/PhilHealth/blob/main/static/UI/SQL_%20Simple.png">
+<img src="https://github.com/jeayuun/PhilHealth/blob/main/static/UI/SQL_%20Moderate.png">
+<img src="https://github.com/jeayuun/PhilHealth/blob/main/static/UI/SQL_%20Difficult.png">
